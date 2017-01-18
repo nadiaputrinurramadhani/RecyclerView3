@@ -129,8 +129,22 @@ public class MainActivity extends AppCompatActivity implements  HotelAdapter.IHo
     }
 
     @Override
-    public void doDelete(int pos) {
-
+    public void doDelete(int pos)
+    {
+        itemPos = pos;
+        final Hotel hotel = mList.get(pos);
+        mList.remove(itemPos);
+        if (isFiltered) mListAll.remove(mListMapFilter.get(itemPos).intValue());
+        mAdapter.notifyDataSetChanged();
+        Snackbar.make(findViewById(R.id.fab),hotel.judul+" Terhapus",Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                mList.add(itemPos,hotel);
+                mAdapter.notifyDataSetChanged();
+            }
+        })
+                .show();
     }
 
     @Override
